@@ -1,3 +1,0 @@
-"""
-Тесты для GitLab Assistant.
-"""
