@@ -1,0 +1,125 @@
+2025-11-19 14:49:43 | INFO     | __main__:main:44 - ============================================================
+2025-11-19 14:49:43 | INFO     | __main__:main:45 - GitLab Assistant запускается...
+2025-11-19 14:49:43 | INFO     | __main__:main:46 - Режим отладки: False
+2025-11-19 14:49:43 | INFO     | __main__:main:47 - Уровень логирования: INFO
+2025-11-19 14:49:43 | INFO     | __main__:main:48 - ============================================================
+2025-11-19 14:49:43 | INFO     | src.webhook.server:start:165 - Webhook server started on 0.0.0.0:8443
+2025-11-19 14:49:43 | SUCCESS  | __main__:main:57 - Webhook сервер запущен на 0.0.0.0:8443
+2025-11-19 14:49:43 | INFO     | src.bot.bot:main:26 - Инициализация базы данных...
+2025-11-19 14:49:43 | ERROR    | __main__:main:62 - Критическая ошибка: the greenlet library is required to use this function. No module named 'greenlet'
+Traceback (most recent call last):
+
+  File "/Users/zlatalaskevic/gitlab-assistant/main.py", line 68, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x103e7e2a0>
+    │       └ <function run at 0x103743420>
+    └ <module 'asyncio' from '/opt/anaconda3/lib/python3.11/asyncio/__init__.py'>
+
+  File "/opt/anaconda3/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           │      │   └ <coroutine object main at 0x107d274c0>
+           │      └ <function Runner.run at 0x10374f600>
+           └ <asyncio.runners.Runner object at 0x1038349d0>
+  File "/opt/anaconda3/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<main() running at /Users/zlatalaskevic/gitlab-assistant/main.py:62> cb=[_run_until_complete...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x10374d260>
+           │    └ <_UnixSelectorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x1038349d0>
+  File "/opt/anaconda3/lib/python3.11/asyncio/base_events.py", line 640, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x10374d1c0>
+    └ <_UnixSelectorEventLoop running=True closed=False debug=False>
+  File "/opt/anaconda3/lib/python3.11/asyncio/base_events.py", line 607, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x10374efc0>
+    └ <_UnixSelectorEventLoop running=True closed=False debug=False>
+  File "/opt/anaconda3/lib/python3.11/asyncio/base_events.py", line 1922, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x103689440>
+    └ <Handle <TaskStepMethWrapper object at 0x107fd9390>()>
+  File "/opt/anaconda3/lib/python3.11/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle <TaskStepMethWrapper object at 0x107fd9390>()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle <TaskStepMethWrapper object at 0x107fd9390>()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle <TaskStepMethWrapper object at 0x107fd9390>()>
+
+> File "/Users/zlatalaskevic/gitlab-assistant/main.py", line 60, in main
+    await bot_main()
+          └ <function main at 0x1048644a0>
+
+  File "/Users/zlatalaskevic/gitlab-assistant/src/bot/bot.py", line 27, in main
+    await init_db()
+          └ <function init_db at 0x107c31b20>
+
+  File "/Users/zlatalaskevic/gitlab-assistant/src/database/database.py", line 33, in init_db
+    async with engine.begin() as conn:
+               │      └ <function AsyncEngine.begin at 0x1077af100>
+               └ <sqlalchemy.ext.asyncio.engine.AsyncEngine object at 0x107bc5b40>
+
+  File "/opt/anaconda3/lib/python3.11/contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+                       │    └ <async_generator object AsyncEngine.begin at 0x107d27a60>
+                       └ <contextlib._AsyncGeneratorContextManager object at 0x107c3ab90>
+  File "/Users/zlatalaskevic/gitlab-assistant/venv/lib/python3.11/site-packages/sqlalchemy/ext/asyncio/engine.py", line 1063, in begin
+    async with conn:
+               └ <sqlalchemy.ext.asyncio.engine.AsyncConnection object at 0x107fd6cf0>
+  File "/Users/zlatalaskevic/gitlab-assistant/venv/lib/python3.11/site-packages/sqlalchemy/ext/asyncio/base.py", line 121, in __aenter__
+    return await self.start(is_ctxmanager=True)
+                 │    └ <function AsyncConnection.start at 0x1077accc0>
+                 └ <sqlalchemy.ext.asyncio.engine.AsyncConnection object at 0x107fd6cf0>
+  File "/Users/zlatalaskevic/gitlab-assistant/venv/lib/python3.11/site-packages/sqlalchemy/ext/asyncio/engine.py", line 273, in start
+    await greenlet_spawn(self.sync_engine.connect)
+          │              │    └ <member 'sync_engine' of 'AsyncConnection' objects>
+          │              └ <sqlalchemy.ext.asyncio.engine.AsyncConnection object at 0x107fd6cf0>
+          └ <function greenlet_spawn at 0x1071984a0>
+  File "/Users/zlatalaskevic/gitlab-assistant/venv/lib/python3.11/site-packages/sqlalchemy/util/concurrency.py", line 99, in greenlet_spawn
+    _not_implemented()
+    └ <function _not_implemented at 0x107193ec0>
+  File "/Users/zlatalaskevic/gitlab-assistant/venv/lib/python3.11/site-packages/sqlalchemy/util/concurrency.py", line 79, in _not_implemented
+    raise ValueError(
+
+ValueError: the greenlet library is required to use this function. No module named 'greenlet'
+2025-11-19 14:49:59 | INFO     | __main__:main:44 - ============================================================
+2025-11-19 14:49:59 | INFO     | __main__:main:45 - GitLab Assistant запускается...
+2025-11-19 14:49:59 | INFO     | __main__:main:46 - Режим отладки: False
+2025-11-19 14:49:59 | INFO     | __main__:main:47 - Уровень логирования: INFO
+2025-11-19 14:49:59 | INFO     | __main__:main:48 - ============================================================
+2025-11-19 14:49:59 | INFO     | src.webhook.server:start:165 - Webhook server started on 0.0.0.0:8443
+2025-11-19 14:49:59 | SUCCESS  | __main__:main:57 - Webhook сервер запущен на 0.0.0.0:8443
+2025-11-19 14:49:59 | INFO     | src.bot.bot:main:26 - Инициализация базы данных...
+2025-11-19 14:49:59 | SUCCESS  | src.bot.bot:main:28 - База данных инициализирована
+2025-11-19 14:49:59 | INFO     | src.bot.bot:main:49 - Запуск бота...
+2025-11-19 21:16:46 | INFO     | __main__:main:44 - ============================================================
+2025-11-19 21:16:46 | INFO     | __main__:main:45 - GitLab Assistant запускается...
+2025-11-19 21:16:46 | INFO     | __main__:main:46 - Режим отладки: False
+2025-11-19 21:16:46 | INFO     | __main__:main:47 - Уровень логирования: INFO
+2025-11-19 21:16:46 | INFO     | __main__:main:48 - ============================================================
+2025-11-19 21:16:46 | INFO     | src.webhook.server:start:165 - Webhook server started on 0.0.0.0:8443
+2025-11-19 21:16:46 | SUCCESS  | __main__:main:57 - Webhook сервер запущен на 0.0.0.0:8443
+2025-11-19 21:16:46 | INFO     | src.bot.bot:main:26 - Инициализация базы данных...
+2025-11-19 21:16:46 | SUCCESS  | src.bot.bot:main:28 - База данных инициализирована
+2025-11-19 21:16:46 | INFO     | src.bot.bot:main:49 - Запуск бота...
+2025-11-19 21:20:27 | INFO     | __main__:main:44 - ============================================================
+2025-11-19 21:20:27 | INFO     | __main__:main:45 - GitLab Assistant запускается...
+2025-11-19 21:20:27 | INFO     | __main__:main:46 - Режим отладки: False
+2025-11-19 21:20:27 | INFO     | __main__:main:47 - Уровень логирования: INFO
+2025-11-19 21:20:27 | INFO     | __main__:main:48 - ============================================================
+2025-11-19 21:20:27 | INFO     | src.webhook.server:start:165 - Webhook server started on 0.0.0.0:8443
+2025-11-19 21:20:27 | SUCCESS  | __main__:main:57 - Webhook сервер запущен на 0.0.0.0:8443
+2025-11-19 21:20:27 | INFO     | src.bot.bot:main:26 - Инициализация базы данных...
+2025-11-19 21:20:27 | SUCCESS  | src.bot.bot:main:28 - База данных инициализирована
+2025-11-19 21:20:27 | INFO     | src.bot.bot:main:49 - Запуск бота...
+2025-11-19 21:22:13 | ERROR    | src.bot.notification_settings_handlers:cmd_notifications:136 - Error in cmd_notifications: (sqlite3.IntegrityError) NOT NULL constraint failed: notification_settings.id
+[SQL: INSERT INTO notification_settings (user_id, mentions_enabled, reviewer_assignment_enabled, pipeline_completion_enabled, merge_enabled, issue_assignment_enabled, label_changes_enabled, thread_updates_enabled, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: (1021470216, 1, 1, 1, 1, 1, 1, 1, '2025-11-19 18:22:13.957112', '2025-11-19 18:22:13.957119')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-11-19 21:25:34 | ERROR    | src.gitlab_api.client:_request:80 - GitLab API request failed: POST https://gitlab.com/api/v4/projects/76124274/hooks - 400, message='Bad Request', url='https://gitlab.com/api/v4/projects/76124274/hooks'
+2025-11-19 21:25:34 | ERROR    | src.webhook.manager:setup_gitlab_webhook:68 - Ошибка при создании GitLab webhook: 400, message='Bad Request', url='https://gitlab.com/api/v4/projects/76124274/hooks'
+2025-11-19 22:20:34 | ERROR    | src.bot.notification_settings_handlers:cmd_notifications:136 - Error in cmd_notifications: (sqlite3.IntegrityError) NOT NULL constraint failed: notification_settings.id
+[SQL: INSERT INTO notification_settings (user_id, mentions_enabled, reviewer_assignment_enabled, pipeline_completion_enabled, merge_enabled, issue_assignment_enabled, label_changes_enabled, thread_updates_enabled, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: (1021470216, 1, 1, 1, 1, 1, 1, 1, '2025-11-19 19:20:34.470208', '2025-11-19 19:20:34.470212')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
