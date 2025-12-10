@@ -1,7 +1,3 @@
-"""
-Основной модуль Telegram бота.
-"""
-
 import asyncio
 from loguru import logger
 
@@ -21,29 +17,24 @@ from src.webhook import set_bot_instance
 
 async def main() -> None:
     """Главная функция запуска бота."""
-    
-    # Инициализация базы данных
+
     logger.info("Инициализация базы данных...")
     await init_db()
     logger.success("База данных инициализирована")
-    
-    # Создание бота и диспетчера
+
     bot = Bot(
         token=settings.telegram_bot_token,
         default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN)
     )
-    
-    # Создание хранилища для FSM
+
     storage = MemoryStorage()
     dp = Dispatcher(storage=storage)
-    
-    # Регистрация роутеров
+
     dp.include_router(main_router)
     dp.include_router(subscription_router)
     dp.include_router(actions_router)
     dp.include_router(notification_settings_router)
-    
-    # Устанавливаем экземпляр бота для отправки уведомлений
+
     set_bot_instance(bot)
     
     logger.info("Запуск бота...")
