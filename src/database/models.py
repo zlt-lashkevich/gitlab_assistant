@@ -25,6 +25,10 @@ class User(Base):
     gitlab_token: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
     github_token: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
 
+    # ID в GitLab/GitHub
+    gitlab_username: Mapped[Optional[str]] = mapped_column(String(255), nullable=True, index=True)
+    github_username: Mapped[Optional[str]] = mapped_column(String(255), nullable=True, index=True)
+
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
