@@ -59,7 +59,7 @@ async def cmd_start(message: Message) -> None:
 
 @router.message(Command("help"))
 async def cmd_help(message: Message) -> None:
-    """Команда /help."""
+    """Команда /help"""
     help_text = (
         "*Доступные команды:*\n\n"
         "🔹 *Основные:*\n"
@@ -112,14 +112,14 @@ async def cmd_status(message: Message) -> None:
         status_text += f"Telegram ID: `{user.telegram_id}`\n\n"
 
         status_text += "**Токены:**\n"
-        status_text += f"GitLab: {'Установлен' if user.gitlab_token else '❌ Не установлен'} ({user.gitlab_username or 'N/A'})\n"
-        status_text += f"GitHub: {'Установлен' if user.github_token else '❌ Не установлен'} ({user.github_username or 'N/A'})\n\n"
+        status_text += f"GitLab: {'Установлен' if user.gitlab_token else 'Не установлен'} ({user.gitlab_username or 'N/A'})\n"
+        status_text += f"GitHub: {'Установлен' if user.github_token else 'Не установлен'} ({user.github_username or 'N/A'})\n\n"
 
         status_text += f"Активных подписок: {len(user.subscriptions)}\n"
 
         await message.answer(status_text, parse_mode="HTML")
 
-
+# в командах с токенами удаляем сообщение от пользователя из соображений безопасности
 @router.message(Command("set_gitlab_token"))
 async def cmd_set_gitlab_token(message: Message) -> None:
     """Команда /set_gitlab_token"""
@@ -129,9 +129,7 @@ async def cmd_set_gitlab_token(message: Message) -> None:
     if len(parts) < 2:
         await message.answer(
             "Неверный формат команды.\n"
-            "Используйте: <code>/set_gitlab_token glpat-xxxxxxxxxxxx</code>\n\n"
-            "Получить токен можно здесь:\n"
-            "https://gitlab.com/-/user_settings/personal_access_tokens",
+            "Используйте: <code>/set_gitlab_token glpat-xxxxxxxxxxxx</code>\n\n",
             parse_mode="HTML"
         )
         return
@@ -151,7 +149,6 @@ async def cmd_set_gitlab_token(message: Message) -> None:
 
     except Exception as e:
         await message.answer(f"Ошибка при проверке токена GitLab: {e}. Проверьте токен и URL GitLab.")
-        # Удаляем сообщение с токеном из соображений безопасности
         await message.delete()
         return
 
@@ -169,7 +166,7 @@ async def cmd_set_gitlab_token(message: Message) -> None:
         user.gitlab_username = gitlab_username
         await session.commit()
 
-        # Удаляем сообщение с токеном из соображений безопасности
+
         await message.delete()
         await message.answer(f"GitLab токен успешно установлен! Ваш GitLab username: **{gitlab_username}**",
                              parse_mode="HTML")
@@ -185,9 +182,7 @@ async def cmd_set_github_token(message: Message) -> None:
     if len(parts) < 2:
         await message.answer(
             "Неверный формат команды.\n"
-            "Используйте: <code>/set_github_token ghp_xxxxxxxxxxxx</code>\n\n"
-            "Получить токен можно здесь:\n"
-            "https://github.com/settings/tokens",
+            "Используйте: <code>/set_github_token ghp_xxxxxxxxxxxx</code>\n\n",
             parse_mode="HTML"
         )
         return
@@ -206,7 +201,6 @@ async def cmd_set_github_token(message: Message) -> None:
 
     except Exception as e:
         await message.answer(f"Ошибка при проверке токена GitHub: {e}. Проверьте токен и права доступа.")
-        # Удаляем сообщение с токеном из соображений безопасности
         await message.delete()
         return
 
@@ -223,7 +217,6 @@ async def cmd_set_github_token(message: Message) -> None:
         user.github_username = github_username
         await session.commit()
 
-        # Удаляем сообщение с токеном из соображений безопасности
         await message.delete()
         await message.answer(f"GitHub токен успешно установлен! Ваш GitHub username: **{github_username}**",
                              parse_mode="HTML")
@@ -231,7 +224,7 @@ async def cmd_set_github_token(message: Message) -> None:
 
 @router.message(Command("list_subscriptions"))
 async def cmd_list_subscriptions(message: Message) -> None:
-    """Команда /list_subscriptions."""
+    """Команда /list_subscriptions"""
     telegram_id = message.from_user.id
 
     async for session in get_session():
