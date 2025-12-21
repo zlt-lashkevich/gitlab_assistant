@@ -44,7 +44,7 @@ async def cmd_start(message: Message) -> None:
 
             welcome_text = (
                 f"Привет, {message.from_user.first_name}!\n\n"
-                "Добро пожаловать в GitLab Assistant — вашего персонального помощника "
+                "Добро пожаловать в GitLab Assistant — ваш персональный помощник "
                 "для отслеживания событий в GitLab и GitHub.\n\n"
                 "Используйте /help для просмотра доступных команд."
             )
