@@ -6,6 +6,7 @@ from typing import List, Dict
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
+from src.database import Notification
 
 def get_platform_keyboard() -> InlineKeyboardMarkup:
     """
