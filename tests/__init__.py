@@ -1,7 +1,3 @@
 """
-Модуль Telegram бота
+Тесты для GitLab Assistant
 """
-
-from src.bot.bot import main
-
-__all__ = ["main"]
