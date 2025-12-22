@@ -107,11 +107,9 @@ async def cmd_status(message: Message) -> None:
             await message.answer("Вы не зарегистрированы. Используйте /start для регистрации.")
             return
 
-        status_text = f"**Ваш статус:**\n\n"
-        status_text += f"Пользователь: {user.first_name or 'N/A'}\n"
-        status_text += f"Telegram ID: `{user.telegram_id}`\n\n"
-
-        status_text += "**Токены:**\n"
+        status_text = f"<b>Ваш статус:</b>\n\n"
+        status_text += f"Пользователь: {user.first_name or 'N/A'}\n\n"
+        status_text += "<b>Токены:</b>\n"
         status_text += f"GitLab: {'Установлен' if user.gitlab_token else 'Не установлен'} ({user.gitlab_username or 'N/A'})\n"
         status_text += f"GitHub: {'Установлен' if user.github_token else 'Не установлен'} ({user.github_username or 'N/A'})\n\n"
 
@@ -168,7 +166,7 @@ async def cmd_set_gitlab_token(message: Message) -> None:
 
 
         await message.delete()
-        await message.answer(f"GitLab токен успешно установлен! Ваш GitLab username: **{gitlab_username}**",
+        await message.answer(f"GitLab токен успешно установлен! Ваш GitLab username: <b>{gitlab_username}</b>",
                              parse_mode="HTML")
 
 
@@ -218,7 +216,7 @@ async def cmd_set_github_token(message: Message) -> None:
         await session.commit()
 
         await message.delete()
-        await message.answer(f"GitHub токен успешно установлен! Ваш GitHub username: **{github_username}**",
+        await message.answer(f"GitHub токен успешно установлен! Ваш GitHub username: <b>{github_username}</b>",
                              parse_mode="HTML")
 
 
