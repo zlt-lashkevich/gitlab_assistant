@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: gitlab-assistant-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+      - ./gitlab_assistant.db:/app/gitlab_assistant.db
+    depends_on:
+      - postgres
+    networks:
+      - gitlab-assistant-network
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: gitlab-assistant-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gitlab_assistant
+      POSTGRES_PASSWORD: secure_password_here
+      POSTGRES_DB: gitlab_assistant
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - gitlab-assistant-network
+
+volumes:
+  postgres_data:
+
+networks:
+  gitlab-assistant-network:
+    driver: bridge
