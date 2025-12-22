@@ -1,7 +1,11 @@
+"""
+Модель настроек уведомлений пользователя
+"""
+
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import String, BigInteger, Boolean, DateTime, ForeignKey
+from sqlalchemy import String, Integer, BigInteger, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database.models import Base
@@ -12,22 +16,22 @@ class NotificationSettings(Base):
 
     __tablename__ = "notification_settings"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     user_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.telegram_id"), nullable=False, unique=True)
 
-    # О упоминаниях
+    # упоминания
     mentions_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    # О назначении ревьюером
+    # назначение ревьюером
     reviewer_assignment_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    # О завершении пайплайнов для своих MR
+    # завершение пайплайнов для своих MR
     pipeline_completion_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    # О мердже своих MR
+    # мердж своих MR
     merge_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    # О назначении исполнителем Issue
+    # назначение исполнителем Issue
     issue_assignment_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    # Об изменении лейблов в связанных Issue
+    # изменение лейблов в связанных Issue
     label_changes_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    # О новых комментариях в тредах
+    # новые комментарии в тредах
     thread_updates_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
