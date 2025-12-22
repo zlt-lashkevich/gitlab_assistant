@@ -1,3 +1,7 @@
+"""
+Модели базы данных для GitLab Assistant
+"""
+
 from datetime import datetime
 from typing import Optional
 
@@ -37,15 +41,15 @@ class User(Base):
 
     # Связи
     subscriptions: Mapped[list["Subscription"]] = relationship(
-        "Subscription", back_populates="user", cascade="all, delete-orphan"
+        "Subscription", back_populates="user", cascade="all, delete-orphan", lazy="selectin"
     )
     notifications: Mapped[list["Notification"]] = relationship(
-        "Notification", back_populates="user", cascade="all, delete-orphan"
+        "Notification", back_populates="user", cascade="all, delete-orphan", lazy="selectin"
     )
 
 
 class Subscription(Base):
-    """Модель подписки на события"""
+    """Модель подписки на события в репозиториях."""
 
     __tablename__ = "subscriptions"
 
@@ -55,19 +59,20 @@ class Subscription(Base):
     # GitLab или GitHub
     platform: Mapped[str] = mapped_column(String(50), nullable=False)
 
-    # ID
+    # ID проекта или репозитория
     project_id: Mapped[str] = mapped_column(String(255), nullable=False)
     project_name: Mapped[str] = mapped_column(String(500), nullable=False)
 
     event_types: Mapped[str] = mapped_column(Text, nullable=False)
 
+    # ID webhook в GitLab/GitHub
     webhook_id: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
 
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
 
     # Связи
-    user: Mapped["User"] = relationship("User", back_populates="subscriptions")
+    user: Mapped["User"] = relationship("User", back_populates="subscriptions", lazy="selectin")
 
 
 class Notification(Base):
@@ -89,10 +94,10 @@ class Notification(Base):
     parent_notification_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("notifications.id"),
                                                                   nullable=True)
     # Дополнительные данные в JSON
-    MetaData: Mapped[Optional[str]] = mapped_column("metedata", Text, nullable=True)
+    meta_data: Mapped[Optional[str]] = mapped_column("meta_data", Text, nullable=True)
 
     sent_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
 
     # Связи
-    user: Mapped["User"] = relationship("User", back_populates="notifications")
+    user: Mapped["User"] = relationship("User", back_populates="notifications", lazy="selectin")
     parent: Mapped[Optional["Notification"]] = relationship("Notification", remote_side=[id], backref="replies")
