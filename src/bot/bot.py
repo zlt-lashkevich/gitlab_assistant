@@ -12,6 +12,7 @@ from src.bot.handlers import router as main_router
 from src.bot.subscription_handlers import router as subscription_router
 from src.bot.actions import router as actions_router
 from src.bot.notification_settings_handlers import router as notification_settings_router
+from src.bot.history_handlers import router as history_router
 from src.webhook import set_bot_instance
 
 
@@ -34,6 +35,7 @@ async def main() -> None:
     dp.include_router(subscription_router)
     dp.include_router(actions_router)
     dp.include_router(notification_settings_router)
+    dp.include_router(history_router)
 
     set_bot_instance(bot)
     
