@@ -211,9 +211,9 @@ async def handle_gitlab_merge_request(data: Dict[str, Any], session: AsyncSessio
 
             user_subscriptions = [sub for sub in user.subscriptions if
                                   sub.project_id == project_id and sub.platform == "gitlab"]
-            if not user_subscriptions or "merge_request" not in user_subscriptions[0].event_types:
-                logger.debug(f"User {user.telegram_id} is not subscribed to 'merge_request' event")
-                continue
+            # if not user_subscriptions or "merge_request" not in user_subscriptions[0].event_types:
+            #     logger.debug(f"User {user.telegram_id} is not subscribed to 'merge_request' event")
+            #     continue
 
             settings = await get_or_create_settings(session, user.telegram_id)
 
@@ -230,7 +230,7 @@ async def handle_gitlab_merge_request(data: Dict[str, Any], session: AsyncSessio
                             f"<b>MR:</b> {mr_title}\n"
                             f"<b>Автор:</b> {mr_author_username}\n"
                             f"<b>Ветка:</b> {source_branch} → {target_branch}\n\n"
-                            f"🔗 <a href='{mr_url}'>Перейти к MR</a>"
+                            f" <a href='{mr_url}'>Перейти к MR</a>"
                         )
 
                         notifications.append({
