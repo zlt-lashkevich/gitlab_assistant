@@ -204,6 +204,17 @@ async def handle_gitlab_merge_request(data: Dict[str, Any], session: AsyncSessio
                 logger.debug(f"User {user.telegram_id} has no gitlab_username, skipping")
                 continue
 
+            # Флаг, что уведомление уже создано для этого пользователя
+            notification_created = False
+
+            # Подписан ли пользователь на событие 'merge_request'
+
+            user_subscriptions = [sub for sub in user.subscriptions if
+                                  sub.project_id == project_id and sub.platform == "gitlab"]
+            if not user_subscriptions or "merge_request" not in user_subscriptions[0].event_types:
+                logger.debug(f"User {user.telegram_id} is not subscribed to 'merge_request' event")
+                continue
+
             settings = await get_or_create_settings(session, user.telegram_id)
 
             # Назначение ревьюером
@@ -238,6 +249,7 @@ async def handle_gitlab_merge_request(data: Dict[str, Any], session: AsyncSessio
                         })
                         logger.info(
                             f"Created reviewer notification for user {user.telegram_id} (@{user.gitlab_username})")
+                        notification_created = True
                         break
 
             # Мердж своего MR
@@ -265,6 +277,38 @@ async def handle_gitlab_merge_request(data: Dict[str, Any], session: AsyncSessio
                     })
                 })
                 logger.info(f"Created merge notification for user {user.telegram_id} (@{user.gitlab_username})")
+
+                notification_created = True
+                continue
+
+            # Если пользователь подписан на 'merge_request' и не попал в персонализированные фильтры
+            if not notification_created and settings.general_updates_enabled:
+
+                message = (
+                    f"Обновление Merge Request\n\n"
+                    f"<b>Проект:</b> {project.get('name')}\n"
+                    f"<b>MR:</b> {mr_title}\n"
+                    f"<b>Действие:</b> {action}\n"
+                    f"<b>Автор:</b> {mr_author_username}\n\n"
+                    f" <a href='{mr_url}'>Перейти к MR</a>"
+                )
+
+                notifications.append({
+                    "user_id": user.telegram_id,
+                    "platform": "gitlab",
+                    "event_type": "merge_request_general",
+                    "project_name": project.get("name", ""),
+                    "message": message,
+                    "metadata": json.dumps({
+                        "mr_id": mr.get("id"),
+                        "mr_iid": mr.get("iid"),
+                        "project_id": project.get("id"),
+                        "url": mr_url,
+                        "action": action
+                    })
+                })
+                logger.info(
+                    f"Created general MR notification for user {user.telegram_id} (@{user.gitlab_username})")
 
     except Exception as e:
         logger.error(f"Ошибка при обработке GitLab MR: {e}")
