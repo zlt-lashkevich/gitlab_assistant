@@ -242,7 +242,7 @@ async def cmd_list_subscriptions(message: Message) -> None:
         subs_text = "<b>Ваши подписки:</b>\n\n"
         for idx, sub in enumerate(user.subscriptions, 1):
             status = "✅" if sub.is_active else "❌"
-            subs_text += f"{idx}. {status} **{sub.project_name}**\n"
+            subs_text += f"{idx}. {status} <b>{sub.project_name}</b>\n"
             subs_text += f"   Платформа: {sub.platform.upper()}\n"
             subs_text += f"   События: {sub.event_types}\n\n"
 
