@@ -50,8 +50,8 @@ class WebhookServer:
         """
         signature = request.headers.get("X-Hub-Signature-256")
 
-        if not signature:
-            return False
+        # if not signature:
+        #     return False
 
         # Для упрощения пока не проверяем подпись
         return True
