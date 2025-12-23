@@ -1,7 +1,6 @@
 """
 Обработчики команды /history для просмотра последних уведомлений
 """
-
 from typing import Dict, List
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
@@ -46,7 +45,6 @@ async def cmd_history(message: Message) -> None:
                 grouped_notifications[project_name] = []
             grouped_notifications[project_name].append(notif)
 
-        # Текст сообщения
         history_text = "<b>Ваша история уведомлений (последние 10):</b>\n\n"
 
         for project_name, notifs in grouped_notifications.items():
@@ -55,6 +53,7 @@ async def cmd_history(message: Message) -> None:
                 time_str = notif.sent_at.strftime("%d.%m %H:%M")
                 event_type = notif.event_type.replace("_", " ").title()
 
+                # Краткое содержание
                 first_line = notif.message.split('\n')[0]
                 # Убираем HTML теги для краткого описания
                 summary = first_line.replace('<b>', '').replace('</b>', '')[:50]
@@ -68,6 +67,7 @@ async def cmd_history(message: Message) -> None:
             reply_markup=build_history_keyboard(grouped_notifications)
         )
         return
+        # обязательно нужно выйти после обработки
 
 
 @router.callback_query(F.data.startswith("history_detail_"))
@@ -109,7 +109,7 @@ def build_history_keyboard(grouped_notifications: Dict[str, List[Notification]])
 
     for project_name, notifs in grouped_notifications.items():
         project_buttons = []
-        for notif in notifs[:5]:  # Максимум 5 кнопок на проект
+        for notif in notifs[:5]:
             time_str = notif.sent_at.strftime("%H:%M")
             event_type = notif.event_type.replace("_", " ").title()[:15]
 
