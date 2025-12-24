@@ -482,14 +482,19 @@ async def process_unsubscribe_confirmation(callback: CallbackQuery, state: FSMCo
 
         project_name = subscription.project_name
 
+        from html import escape
+
+        safe_name = escape(project_name)
+
         # Удаляем
         await session.delete(subscription)
         await session.commit()
 
         await callback.message.edit_text(
             f"Подписка удалена!\n\n"
-            f"Проект: {project_name}\n\n"
-            f"Вы больше не будете получать уведомления от этого проекта."
+            f"Проект: {safe_name}\n\n"
+            f"Вы больше не будете получать уведомления от этого проекта.",
+            parse_mode="HTML"
         )
 
     await state.clear()
