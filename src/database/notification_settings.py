@@ -12,23 +12,31 @@ from src.database.models import Base
 
 
 class NotificationSettings(Base):
-    """Настройки уведомлений пользователя"""
+    """Модель настроек уведомлений для пользователя"""
 
     __tablename__ = "notification_settings"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    user_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.telegram_id"), nullable=False, unique=True)
+    user_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.telegram_id"), unique=True, nullable=False)
 
     # упоминания
     mentions_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    # назначение ревьюером
+
+
+    # Общие настройки
+    general_updates_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+
+    # GitLab/GitHub Merge Request / Pull Request
     reviewer_assignment_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    # завершение пайплайнов для своих MR
-    pipeline_completion_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    # мердж своих MR
     merge_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    # назначение исполнителем Issue
+
+    # GitLab Pipeline
+    pipeline_completion_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+
+    # Issue/Note
     issue_assignment_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    issue_mention_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    note_mention_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     # изменение лейблов в связанных Issue
     label_changes_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     # новые комментарии в тредах
@@ -39,5 +47,6 @@ class NotificationSettings(Base):
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
     )
 
-    # Связи
+    # Связь с пользователем
+    # user: Mapped["User"] = relationship("User", back_populates="settings", lazy="selectin")
     user: Mapped["User"] = relationship("User", backref="notification_settings")
