@@ -117,19 +117,19 @@ async def handle_gitlab_note(data: Dict[str, Any], session: AsyncSession) -> Lis
             # Проверяем упоминание
             if settings.mentions_enabled and await check_user_mentioned(note_text, user):
                 should_notify = True
-                notification_reason = "💬 Вас упомянули в комментарии"
+                notification_reason = "Вас упомянули в комментарии"
 
             # Автор MR/Issue
             elif user.gitlab_username == mr_author_username and settings.thread_updates_enabled:
                 should_notify = True
-                notification_reason = "💬 Новый комментарий в вашем MR/Issue"
+                notification_reason = "Новый комментарий в вашем MR/Issue"
 
             # Ревьюер
             elif settings.thread_updates_enabled:
                 for reviewer in reviewers:
                     if user.gitlab_username == reviewer.get("username"):
                         should_notify = True
-                        notification_reason = "💬 Новый комментарий в MR, где вы ревьюер"
+                        notification_reason = "Новый комментарий в MR, где вы ревьюер"
                         break
 
             # Исполнитель
@@ -137,7 +137,7 @@ async def handle_gitlab_note(data: Dict[str, Any], session: AsyncSession) -> Lis
                 for assignee in assignees:
                     if user.gitlab_username == assignee.get("username"):
                         should_notify = True
-                        notification_reason = "💬 Новый комментарий в Issue, где вы исполнитель"
+                        notification_reason = "Новый комментарий в Issue, где вы исполнитель"
                         break
 
             if should_notify:
